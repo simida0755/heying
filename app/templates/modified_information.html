@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drift.css')}}">
+{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block content %}
+    <div style="margin-top:100px;" class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="row">
+                <div class="col-md-2">
+                    <a id='nav_url' href="{{ url_for('web.index') }}">去首页</a>
+                </div>
+            </div>
+            <div class="bg-container">
+                <div class="row">
+                    <div class="col-md-12 text-center bg-head">
+                        <span class="drift-title">更新<span
+                                class="space">{{ user.nickname }}</span>的个人资料</span>
+                    </div>
+                </div>
+                <div style="margin-top:15px;" class="row">
+                    <div class="col-md-10 col-md-offset-1 flex-vertical gifter-container">
+                        <span class="sub-title-color">系统会根据地址及资料进行合影匹配，请如实填写:</span>
+
+                    </div>
+
+                <form action="" method="post">
+                    <div style="margin-top:20px;" class="row">
+                        <div class="col-md-10 col-md-offset-1 flex-vertical input-margin">
+                            <label class="sub-title-color" for="name">合影人姓名</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input placeholder="请填写合影人姓名" id="name"
+                                           name="name"
+                                           class="normal-input btn-block form-control"
+                                           value="{{ form.name.data | default('', true) }}">
+                                </div>
+                            </div>
+
+                            <label class="sub-title-color" for="gender">性别</label>
+                            <div class="col-md-5">
+                                    <input placeholder="如：‘男’" id="gender"
+                                           name="gender"
+                                           class="normal-input btn-block form-control"
+                                           value="{{ form.gender.data | default('', true) }}">
+                            </div>
+                            <label class="sub-title-color" for="phone_number">联系电话</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <input placeholder="如13818181818" id="phone_number"
+                                           name="phone_number"
+                                           class="normal-input btn-block form-control"
+                                           value="{{ form.phone_number.data | default('', true) }}">
+                                </div>
+                            </div>
+                            <label class="sub-title-color" for="district">合影人所在区域</label>
+                    <textarea class="form-control" rows="3" id="district" name="district"
+                              placeholder="如-宝安区-翻身地铁站">{{ form.district.data | default('',true) }}</textarea>
+                            <label class="sub-title-color" for="subway_site">合影人附近地铁站</label>
+                                            <textarea class="form-control" rows="3" id="subway_site" name="subway_site"
+                              placeholder="如-宝安区-翻身地铁站">{{ form.subway_site.data | default('',true) }}</textarea>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="position: relative;left:-20px;"
+                             class="col-md-5 col-md-offset-4 flex-vertical text-center">
+                            <input style="margin-top:12px;" type="submit"
+                                   class="btn btn-big btn-block" value="提交">
+                        <span style="margin-top:15px;"
+                              class="main-color">提交信息，等待{{ user.nickname }}的信息提交成功</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='3rd/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/drift.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pending.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="row module-title">
+        <div style="margin-top:30px;" class="col-md-2">
+            <span class='sub-title'>合影记录</span>
+        </div>
+    </div>
+    {% for group in groups %}
+        <div style="margin-top:20px;" class="row drift-container">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-2">
+                        <img class="book-img-small shadow" src="{{ group.movie_images }}">
+                    </div>
+                    <div style="margin-left:-30px;"
+                         class="col-md-8 flex-vertical description">
+                        <div><span>电影名：</span><span>{{ group.movie_title }}</span></div>
+                        <div><span>导演：</span><span>{{ group.movie_directors }}</span></div>
+                        <div><span>发起日期：</span><span>{{ group.date }}</span></div>
+                        <div>
+                            <span>合影人：</span>
+                            <span>{{ group.you_are.nickname }}</span>
+                        </div>
+                        <div><span>状态：</span><span
+                                class="status-color">{{ group.status_str }}</span></div>
+                        <div><span>所在区域：</span><span
+                                class="space"></span><span>{{ group.district }}</span>
+                        </div>
+                        <div><span>联系电话：</span><span>{{ group.you_are.phone_number }}</span></div>
+                    </div>
+                    <div class="col-md-2 flex-vertical">
+{#                        {% if group.status_str == '待观影' %}#}
+{#                                <a href="{{ url_for('web.redraw_group', gid=group.group_id) }}">#}
+{#                                    <span class="btn-normal">已邮寄</span>#}
+{#                                </a>#}
+{#                                <a style="margin-top:20px;" href="{{ url_for('web.redraw_group', gid=group.group_id) }}">#}
+{#                                    <span class="btn-shadow">拒&nbsp;&nbsp;&nbsp;绝</span>#}
+{#                                </a>#}
+{#                        {% endif %}#}
+
+                        {% if group.status_str == '待观影' %}
+                                <a href="{{ url_for('web.redraw_from_group', gid=group.group_id) }}">
+                                        <span class="btn-normal">取消合影</span>
+                                </a>
+                        {% else %}
+                                <a href="{{ url_for('web.delete_from_group', gid=group.group_id) }}">
+                                        <span class="btn-normal">删除记录</span>
+                                </a>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+{#                <div style="margin-top:20px;" class="row message-container">#}
+{#                    <div class="col-md-12">#}
+{#                        {% if drift.you_are == 'receiver' %}#}
+{#                            {% set message_flag = '他的留言：' %}#}
+{#                        {% else %}#}
+{#                            {% set message_flag = '你的留言：' %}#}
+{#                        {% endif %}#}
+{#                        <p><span#}
+{#                                class="message-flag">{{ message_flag }}</span>#}
+{#                            <span>{{ drift.message }}</span>#}
+{#                        </p>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

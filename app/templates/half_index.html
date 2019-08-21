@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css')}}">
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+    <div id="books" class="row">
+        {% for movie in recent %}
+            <div class="col-md-4 book-container">
+                <a href="{{ url_for('web.movie_detail', mid=movie.mid) }}" class="">
+                    <div class="col-md-4 no-padding">
+                        <meta name="referrer" content="never">
+                        <img class="book-img cssshadow" src="{{ movie.images }}">
+                    </div>
+                    <div style="margin-left: 0;" class="col-md-8 flex-vertical book-info">
+                        <span class="title">{{ movie.title }}</span>
+                        <div class="description-font"><span>导演：</span><span>{{ movie.directors }}</span>
+                        </div>
+                        <span class="summary description-font"><span>演员：</span>{{ movie.casts }}</span>
+                        <span class="summary description-font"><span>首播时间：</span>{{ movie.mainland_pubdate }}</span>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

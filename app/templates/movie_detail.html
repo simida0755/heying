@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/ui/remodal.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/ui/remodal-default-theme.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/book-detail.css')}}">
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <div class="row book-container">
+        <div class="col-md-2">
+            <meta name="referrer" content="never">
+            <img class="book-img" src="{{ movie.images }}"/>
+        </div>
+        <div style="margin-left: 30px;" class="col-md-5 flex-vertical">
+            <div>
+                <h4>{{ movie.title }}</h4>
+            </div>
+            <div class="description-font-margin">
+                <div>
+                    <span>导演:</span>
+                    <span>{{ movie.directors }}</span>
+                </div>
+                <div>
+                    <span>演员:</span>
+                    <span>{{ movie.casts }}</span>
+                </div>
+                <div>
+                    <span>首播：</span>
+                    <span>{{ movie.mainland_pubdate }}</span>
+                </div>
+                <div>
+                    <span>时长：</span>
+                    <span>{{ movie.durations }}</span>
+                </div>
+                <div>
+                    <span>豆瓣评分：</span>
+                    <span>{{ movie.average }}</span>
+                </div>
+                <div>
+                    <span>MID：</span>
+                    <span id="mid">{{ movie.mid }}</span>
+                </div>
+                {% if wishes.total or gifts.total %}
+                    <div class="color-count">
+                        <span>{{ wishes.total }}人想要 / </span>
+                        <span>{{ gifts.total}}人可赠送</span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:30px;" class="row">
+        {% if not has_in_match and not group %}
+            <div class="col-md-1">
+                <a class="btn btn-outline"
+                   href="#modal">
+                    我要合影
+                </a>
+            </div>
+            <div style="margin-left:30px;" class="col-md-1">
+                <a class="btn btn-outline"
+                   href="{{ url_for('web.movie_detail_more',mid=movie.mid) }}">
+                    更多剧照
+                </a>
+            </div>
+         {% elif has_in_match %}
+            <div class="col-md-3">
+                <span class="bg-info">已添加到待合影队列</span>
+            </div>
+        {% else %}
+            <div class="col-md-3">
+                <span class="bg-info">已与{{ group.current_user_grouper.nickname }}匹配合影</span>
+            </div>
+        {% endif %}
+    </div>
+    <div style="margin-top: 30px;" class="row">
+        <div class="col-md-2"><span class="description-title">内容简介</span></div>
+    </div>
+    <div style="margin-top:15px;" class="row">
+        <div class="col-md-11">
+            <p class="description-font">电影简介，这里暂无</p>
+        </div>
+    </div>
+    {% if gifts.total!= 0 and not has_in_gifts %}
+        <div style="margin-top:30px;" class="row">
+            <div class="col-md-3"><span class="description-title">想要合影此电影的人</span></div>
+        </div>
+        <hr style="margin-top:5px;"/>
+        {% for matcher in matchers %}
+            <div style="margin-top:30px;" class="row">
+                <div class="col-md-1">
+                    {{ matcher.user.nickname }}
+                </div>
+                <div class="col-md-2 description-font">
+                    发起于：{{ matcher.data }}
+                </div>
+                <div class="col-md-2">
+                    <a class="btn-normal"
+                       href="{{ url_for('web.matcher_deatil',matcher_id = matcher.user.id) }}">合影人详细信息</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if wishes.total != 0 and has_in_gifts %}
+        <div style="margin-top:30px;" class="row">
+            <div class="col-md-3"><span class="description-title">向他们赠送此书</span></div>
+        </div>
+        <hr style="margin-top:5px;"/>
+        {% for wish in wishes.trades %}
+            <div style="margin-top:30px;" class="row">
+                <div class="col-md-1">
+                    {{ wish.user_name }}
+                </div>
+                <div class="col-md-2 description-font">
+                    上传于{{ wish.time }}
+                </div>
+                <div class="col-md-2">
+                    <a class="btn-normal"
+                       href="{{ url_for('web.satisfy_wish', wid=wish.id, mid=[mvoie.mid]) }}">向他赠送此书</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="remodal" data-remodal-id="modal" role="dialog"
+         aria-labelledby="modal1Title" aria-describedby="modal1Desc"
+         data-remodal-options="closeOnOutsideClick: false">
+        <button data-remodal-action="close" class="remodal-close"
+                aria-label="Close"></button>
+        <div>
+            <h5 class="diag-title">
+                您确定决定与他人一同观看《{{ movie.title }}》这部电影吗？</h5>
+            <p id="modal1Desc" class="description-font">
+                如果您不想合影了，或者有合影时间冲突，请及时修改或取消合影。谢谢你的支持和理解。
+            </p>
+        </div>
+        <br>
+        <button data-remodal-action="confirm" class="remodal-confirm">确定合影</button>
+        <button data-remodal-action="cancel" class="remodal-cancel">不，算了</button>
+    </div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='3rd/remodal.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/book-detail.js') }}"></script>
+{% endblock %}

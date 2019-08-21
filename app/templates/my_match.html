@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    {{ super() }}
+    <div class="row flex-vertical-center">
+        <div style="margin-top:20px;" class="col-md-6">
+            <span class="sub-title">我要合影的电影  共 {{ matches | length  }}  部</span>
+            <hr>
+        </div>
+    </div>
+    {% for match in matches %}
+        <div class="row">
+            <a href="{{ url_for('web.movie_detail', mid=match.movie.mid) }}" class="">
+                <div style="margin-bottom:30px;" class="col-md-9 col-padding">
+                    <div class="col-md-2">
+                        <meta name="referrer" content="never">
+                        <img class="book-img-small shadow" src="{{ match.movie.images }}">
+                    </div>
+                    <div style="margin-top:6px;" class="col-md-6 flex-vertical">
+                            <span id="title"
+                                  class="book-middle-title">{{ match.movie.title }}</span>
+                        <div style="margin-top:6px;"
+                             class="flex-vertical description-font">
+                            <span id="directors">{{ match.movie.directors }}</span>
+                            <span id="casts">{{ match.movie.casts }}</span>
+                            <span id="durations">{{ match.movie.durations }}</span>
+                            <span id="mid">{{ match.movie.mid }}</span>
+                            <span >状态：<span class="link-normal">{{ match.match_status_str }}</span></span>
+                        </div>
+                        {% if match.match_status_str == '待合影' %}
+                            <a class="link-normal"
+                               href="{{ url_for('web.redraw_from_Match',match_id = match.id) }}">
+                                撤销
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {% if match.match_status_str != '待合影' %}
+                        <div class="col-md-3 flex-vertical">
+                            <a class="link-normal" class="bg-info"
+                               href="{{ url_for('web.delete_from_Match',match_id = match.id) }}">
+                                删除记录
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename="js/util.js") }}"></script>
+{% endblock %}
