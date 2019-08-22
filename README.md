@@ -12,4 +12,4 @@
 更新个人资料
 ![Image text](https://github.com/simida0755/heying/blob/master/app/static/展示图片/更新个人资料.png)
 脑图
-![Image text](https://github.com/simida0755/heying/blob/master/app/static/展示图片/脑图.png）
+![Image text](https://github.com/simida0755/heying/blob/master/app/static/展示图片/脑图.png)
